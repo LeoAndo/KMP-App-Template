@@ -15,13 +15,11 @@ Android Studio Meerkat Feature Drop | 2024.3.2
 
 # capture Android Pixel Fold API 35
 
-<img src="./images/img.png" width=50% />
-<img src="./images/img_1.png" width=50% />
+|                    1                     |                     2                      |
+|:----------------------------------------:|:------------------------------------------:|
+| <img src="./images/img.png" width=50% /> | <img src="./images/img_1.png" width=50% /> |
 
 # capture iPhone 16 Pro Max iOS 18.4
-
-<img src="./images/img_2.png" width=50% />
-<img src="./images/img_3.png" width=50% />
-
-
-
+|                    1                     |                     2                      |
+|:----------------------------------------:|:------------------------------------------:|
+| <img src="./images/img_2.png" width=50% /> | <img src="./images/img_3.png" width=50% /> |
