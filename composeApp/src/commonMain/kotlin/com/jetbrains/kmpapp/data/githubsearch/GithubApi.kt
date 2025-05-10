@@ -37,20 +37,34 @@ class GithubApi(private val json: Json) {
                     when (e) {
                         is ClientRequestException -> { // ktor: 400番台のエラー
                             val errorResponse = e.response
-                            val message =
-                                json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
+                            // APIの仕様に合わせて想定されるエラーのみ処理する
                             when (errorResponse.status) {
-                                HttpStatusCode.Unauthorized -> throw AppException.UnAuthorized(
-                                    message
-                                )
+                                HttpStatusCode.Unauthorized -> { // "Bearer $GITHUB_ACCESS_TOKEN"が不正な場合
+                                    val message =
+                                        json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
+                                    throw AppException.UnAuthorized(message)
+                                }
 
-                                HttpStatusCode.NotFound -> throw AppException.NotFound(message)
-                                HttpStatusCode.Forbidden -> throw AppException.Forbidden(message)
-                                HttpStatusCode.UnprocessableEntity -> {
+                                HttpStatusCode.NotFound -> { // endpointが存在しない場合
+                                    val message =
+                                        json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
+                                    throw AppException.NotFound(message)
+                                }
+
+                                HttpStatusCode.Forbidden -> { // requestのrate limitを超えた場合
+                                    val message =
+                                        json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
+                                    throw AppException.Forbidden(message)
+                                }
+
+                                HttpStatusCode.UnprocessableEntity -> { // requestのパラメータが不正な場合
+                                    val message =
+                                        json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
                                     throw AppException.UnprocessableEntity(message)
                                 }
 
-                                else -> throw AppException.Unknown(message)
+                                // 他の400番台のエラーでもレスポンスBodyの形式がGithubErrorResponseと同じか不明のためエラーメッセージを設定する
+                                else -> throw AppException.Unknown(e.message)
                             }
                         }
 
