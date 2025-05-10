@@ -13,9 +13,7 @@ fun AppSurface(
 ) {
     MaterialTheme {
         Surface(
-            modifier = modifier
-                .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.safeDrawing),
+            modifier = modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
             content = content,
         )
