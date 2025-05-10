@@ -41,7 +41,10 @@ fun GithubSearchScreen(modifier: Modifier = Modifier) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     val viewModel = koinViewModel<GithubSearchViewModel>()
     SearchScreenStateless(
-        modifier = modifier.fillMaxSize().padding(12.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(WindowInsets.safeDrawing.asPaddingValues())
+            .padding(12.dp),
         query = query,
         sortType = sortType,
         uiState = viewModel.uiState,
@@ -189,4 +192,3 @@ private fun SearchScreenStateless(
         }
     }
 }
-
