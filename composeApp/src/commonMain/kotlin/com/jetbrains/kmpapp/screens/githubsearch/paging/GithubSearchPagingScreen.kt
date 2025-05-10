@@ -61,7 +61,10 @@ fun GithubSearchPagingScreen(modifier: Modifier = Modifier) {
     }
 
     GithubSearchPagingScreenStateless(
-        modifier = modifier.fillMaxSize().padding(12.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(WindowInsets.safeDrawing.asPaddingValues())
+            .padding(12.dp),
         query = query,
         sortType = sortType,
         uiState = viewModel.uiState,
