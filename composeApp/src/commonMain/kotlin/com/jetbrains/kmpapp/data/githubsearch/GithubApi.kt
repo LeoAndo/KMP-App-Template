@@ -93,7 +93,7 @@ class GithubApi(private val json: Json) {
     }
 
     companion object {
-        const val SEARCH_PER_PAGE = 5
+        const val SEARCH_PER_PAGE = 50
         private const val TIMEOUT_MILLIS: Long = 3 * 1000 // TODO Adjust this value for debugging
         private const val GITHUB_API_DOMAIN = "https://api.github.com/"
         private const val GITHUB_ACCESS_TOKEN =
