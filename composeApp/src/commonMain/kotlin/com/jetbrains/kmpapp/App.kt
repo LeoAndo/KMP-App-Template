@@ -22,7 +22,7 @@ import com.jetbrains.kmpapp.screens.museum.MuseumApp
 
 // entry point.
 @Composable
-fun App() {
+internal fun App() {
     var screens by remember { mutableStateOf(Screens.Init) }
     // Screensを使って表示する画面を切り替える
     when (screens) {

@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun AppError(
+internal fun AppError(
     modifier: Modifier = Modifier,
     message: String,
     onReload: () -> Unit,

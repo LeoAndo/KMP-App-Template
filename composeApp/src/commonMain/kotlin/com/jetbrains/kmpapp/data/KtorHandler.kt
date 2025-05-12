@@ -7,7 +7,7 @@ import io.ktor.client.plugins.*
 /**
  * Ktor のエラーハンドリングを行うクラス.
  */
-object KtorHandler {
+internal object KtorHandler {
     /**
      * 共通のAPI エラーハンドリングはここで行う.
      */

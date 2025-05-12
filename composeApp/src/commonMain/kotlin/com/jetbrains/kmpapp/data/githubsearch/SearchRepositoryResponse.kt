@@ -4,7 +4,7 @@ import com.jetbrains.kmpapp.domain.model.RepositorySummary
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SearchRepositoryResponse(
+internal data class SearchRepositoryResponse(
     val incomplete_results: Boolean,
     val items: List<Item>,
     val total_count: Int
@@ -125,7 +125,7 @@ data class SearchRepositoryResponse(
     }
 }
 
-fun SearchRepositoryResponse.toModels(): List<RepositorySummary> {
+internal fun SearchRepositoryResponse.toModels(): List<RepositorySummary> {
     return this.items.map {
         RepositorySummary(
             id = it.id,

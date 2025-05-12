@@ -15,7 +15,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
-val dataModule = module {
+internal val dataModule = module {
     // アプリ共通で利用するJsonインスタンスを提供する (single: シングルトンインスタンス)
     single<Json> { Json { ignoreUnknownKeys = true } }
 
@@ -32,7 +32,7 @@ val dataModule = module {
     single<GithubApi> { GithubApi(get()) }
 }
 
-val viewModelModule = module {
+internal val viewModelModule = module {
     factoryOf(::ListViewModel)
     factoryOf(::DetailViewModel)
     factoryOf(::GithubSearchViewModel)

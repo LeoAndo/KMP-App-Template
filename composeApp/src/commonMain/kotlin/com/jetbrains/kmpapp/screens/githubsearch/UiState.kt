@@ -2,7 +2,7 @@ package com.jetbrains.kmpapp.screens.githubsearch
 
 import com.jetbrains.kmpapp.domain.model.RepositorySummary
 
-sealed interface UiState {
+internal sealed interface UiState {
     data object Initial : UiState
     data object Loading : UiState
     data class Failure(val throwable: Throwable) : UiState

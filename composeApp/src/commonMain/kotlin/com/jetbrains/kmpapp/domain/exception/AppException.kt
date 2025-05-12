@@ -3,7 +3,7 @@ package com.jetbrains.kmpapp.domain.exception
 /**
  * アプリケーション固有の例外クラス
  */
-sealed class AppException : Exception() {
+internal sealed class AppException : Exception() {
     data class UnAuthorized(override val message: String) : AppException()
     data class Forbidden(override val message: String) : AppException()
     data class UnprocessableEntity(override val message: String) : AppException()

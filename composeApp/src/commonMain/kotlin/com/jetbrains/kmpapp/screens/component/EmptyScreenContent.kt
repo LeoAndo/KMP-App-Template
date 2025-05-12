@@ -10,7 +10,7 @@ import kmp_app_template.composeapp.generated.resources.no_data_available
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun EmptyScreenContent(
+internal fun EmptyScreenContent(
     modifier: Modifier = Modifier,
 ) {
     Box(

@@ -1,8 +1,9 @@
 package com.jetbrains.kmpapp.screens.githubsearch.paging
 
 import com.jetbrains.kmpapp.domain.model.RepositorySummary
+import com.jetbrains.kmpapp.getUptimeMillis
 
-data class UiState(
+internal data class UiState(
     val items: List<RepositorySummary> = emptyList(),
     val currentPage: Int = 1,
     val isLastPage: Boolean = false,

@@ -7,7 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 
 @Composable
-fun AppAlertDialog(
+internal fun AppAlertDialog(
     titleText: String? = null,
     messageText: String? = null,
     confirmText: String,
@@ -39,7 +39,7 @@ fun AppAlertDialog(
 }
 
 @Composable
-fun AppAlertDialogStateless(
+private fun AppAlertDialogStateless(
     titleText: String? = null,
     messageText: String? = null,
     confirmText: String,

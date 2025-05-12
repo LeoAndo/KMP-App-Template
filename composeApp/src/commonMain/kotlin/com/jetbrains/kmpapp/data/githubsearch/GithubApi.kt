@@ -11,7 +11,7 @@ import io.ktor.http.*
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.cancellation.CancellationException
 
-class GithubApi(private val json: Json) {
+internal class GithubApi(private val json: Json) {
     // APIごとに異なる設定を持つHttpClientを作成する
     private val httpClient: HttpClient by lazy {
         HttpClient {

@@ -41,7 +41,7 @@ import androidx.compose.runtime.snapshotFlow
 import com.jetbrains.kmpapp.screens.component.AppAlertDialog
 
 @Composable
-fun GithubSearchPagingScreen(modifier: Modifier = Modifier) {
+internal fun GithubSearchPagingScreen(modifier: Modifier = Modifier) {
     var query by rememberSaveable { mutableStateOf("") }
     var sortType by rememberSaveable { mutableStateOf(SortType.STARS) }
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -72,13 +72,6 @@ fun GithubSearchPagingScreen(modifier: Modifier = Modifier) {
         onValueChange = { query = it },
         onSortTypeChange = { sortType = it },
         onSearch = { viewModel.searchRepositories(query, 1, sortType.sort) },
-        onRetry = {
-            viewModel.searchRepositories(
-                query,
-                viewModel.uiState.currentPage,
-                sortType.sort
-            )
-        },
         onClickItem = { url -> launchExternalBrowser(url) },
         onDropdownMenuExpanded = { expanded = it },
         listState = listState
@@ -95,7 +88,6 @@ private fun GithubSearchPagingScreenStateless(
     onValueChange: (String) -> Unit,
     onSortTypeChange: (SortType) -> Unit,
     onSearch: () -> Unit,
-    onRetry: () -> Unit,
     onClickItem: (String) -> Unit = {},
     onDropdownMenuExpanded: (Boolean) -> Unit,
     listState: LazyListState
@@ -220,8 +212,7 @@ private fun GithubSearchPagingScreenStateless(
                 AppAlertDialog(
                     titleText = "Error",
                     messageText = message,
-                    confirmText = "Retry",
-                    onClickConfirmButton = { onRetry() }
+                    confirmText = "OK",
                 )
             }
         }

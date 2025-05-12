@@ -10,7 +10,7 @@ import com.jetbrains.kmpapp.data.githubsearch.toModels
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
-class GithubSearchViewModel(private val api: GithubApi) : ViewModel() {
+internal class GithubSearchViewModel(private val api: GithubApi) : ViewModel() {
     var uiState by mutableStateOf<UiState>(UiState.Initial)
         private set
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->

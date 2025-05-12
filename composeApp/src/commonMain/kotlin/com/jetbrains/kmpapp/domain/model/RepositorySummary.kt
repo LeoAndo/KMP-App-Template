@@ -1,6 +1,6 @@
 package com.jetbrains.kmpapp.domain.model
 
-data class RepositorySummary(
+internal data class RepositorySummary(
     val id: Int,
     val name: String,
     val ownerName: String,

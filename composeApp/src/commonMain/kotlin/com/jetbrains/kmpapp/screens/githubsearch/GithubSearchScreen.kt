@@ -35,7 +35,7 @@ import com.jetbrains.kmpapp.screens.component.AppLoading
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun GithubSearchScreen(modifier: Modifier = Modifier) {
+internal fun GithubSearchScreen(modifier: Modifier = Modifier) {
     var query by rememberSaveable { mutableStateOf("") }
     var sortType by rememberSaveable { mutableStateOf(SortType.STARS) }
     var expanded by rememberSaveable { mutableStateOf(false) }

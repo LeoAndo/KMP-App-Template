@@ -10,7 +10,7 @@ import com.jetbrains.kmpapp.data.githubsearch.toModels
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
-class GithubSearchPagingViewModel(private val api: GithubApi) : ViewModel() {
+internal class GithubSearchPagingViewModel(private val api: GithubApi) : ViewModel() {
     var uiState by mutableStateOf(UiState())
         private set
 
@@ -22,9 +22,7 @@ class GithubSearchPagingViewModel(private val api: GithubApi) : ViewModel() {
         // 通信処理中の場合は、何もしない
         if (uiState.isLoading) return
 
-
         val isRefresh = page == 1
-        // 最初のページを取得する場合は、itemsを空にする (リフレッシュ)
         if (isRefresh) {
             uiState = uiState.copy(items = emptyList())
         }

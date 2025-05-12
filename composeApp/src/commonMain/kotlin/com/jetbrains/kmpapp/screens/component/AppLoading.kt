@@ -7,7 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun AppLoading(modifier: Modifier = Modifier) {
+internal fun AppLoading(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
