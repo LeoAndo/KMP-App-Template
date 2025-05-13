@@ -9,6 +9,14 @@ https://github.com/Kotlin/KMP-App-Template/commit/4d0a6a33b312ac78a336cdf4ead1d0
 Android Studio Meerkat Feature Drop | 2024.3.2
 ```
 
+# setup
+## Android: Set the Github access token in KMP-App-Template/local.properties
+<img src="./images/setup_android.png" width=100% />
+
+## iOS: Set the Github access token in KMP-App-Template/iosApp/Configuration/Config.xcconfig
+Create Config.xcconfig based on Config.xcconfig.sample and add the following setting value for GITHUB_ACCESS<br>
+<img src="./images/setup_ios.png" width=100% />
+
 # Please Check TODO comments
 
 <img src="./images/todo_comments.png" width=100% />

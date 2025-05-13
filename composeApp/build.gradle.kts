@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -74,6 +76,12 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        val localProperties = project.rootProject.file("local.properties")
+        val githubAccessToken = localProperties.inputStream()
+            .use { propsStream -> Properties().apply { load(propsStream) } }
+            .getProperty("GITHUB_ACCESS_TOKEN") ?: throw IllegalStateException("GITHUB_ACCESS_TOKEN not found in local.properties")
+        buildConfigField("String", "GITHUB_ACCESS_TOKEN", "\"${githubAccessToken}\"")
     }
     packaging {
         resources {
@@ -88,6 +96,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 
