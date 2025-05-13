@@ -12,3 +12,6 @@ internal expect fun getUptimeMillis(): Long
 internal expect object SecretKeyProvider {
     val githubAccessToken: String
 }
+
+internal expect fun logDebug(tag: String, message: String)
+internal expect fun logError(tag: String, message: String, throwable: Throwable? = null)

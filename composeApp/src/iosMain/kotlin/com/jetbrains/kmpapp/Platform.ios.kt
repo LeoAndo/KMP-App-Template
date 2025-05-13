@@ -1,5 +1,6 @@
 package com.jetbrains.kmpapp
 
+import platform.Foundation.NSLog
 import platform.Foundation.NSProcessInfo
 import platform.Foundation.NSURL
 import platform.UIKit.UIApplication
@@ -20,5 +21,19 @@ internal actual fun getUptimeMillis(): Long {
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 internal actual object SecretKeyProvider {
-    actual val githubAccessToken = platform.Foundation.NSBundle.mainBundle.infoDictionary?.get("GITHUB_ACCESS_TOKEN") as String
+    actual val githubAccessToken =
+        platform.Foundation.NSBundle.mainBundle.infoDictionary?.get("GITHUB_ACCESS_TOKEN") as String
+}
+
+internal actual fun logDebug(tag: String, message: String) {
+    NSLog("[DEBUG] [$tag] $message")
+}
+
+internal actual fun logError(tag: String, message: String, throwable: Throwable?) {
+    val fullMessage = if (throwable != null) {
+        "$message: ${throwable.message ?: throwable::class.simpleName}"
+    } else {
+        message
+    }
+    NSLog("[ERROR] [$tag] $fullMessage")
 }
