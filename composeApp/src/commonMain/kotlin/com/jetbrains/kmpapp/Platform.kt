@@ -6,7 +6,7 @@ internal expect fun launchExternalBrowser(url: String)
 // 端末の起動からの経過時間(ミリ秒)を取得する
 internal expect fun getUptimeMillis(): Long
 
-// 秘匿情報の管理用object (事件段階APIのため、ワーニングが現状発生する)
+// 秘匿情報の管理用object (実験段階のAPIのため、ワーニングが現状発生する)
 // https://github.com/yshrsmz/BuildKonfig　は使わない
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 internal expect object SecretKeyProvider {
