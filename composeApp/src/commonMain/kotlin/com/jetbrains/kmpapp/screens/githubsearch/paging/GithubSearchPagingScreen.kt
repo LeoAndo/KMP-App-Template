@@ -4,8 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Card
@@ -22,8 +20,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jetbrains.kmpapp.domain.exception.AppException
@@ -36,6 +32,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Button
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import com.jetbrains.kmpapp.screens.component.AppAlertDialog
@@ -92,8 +89,6 @@ private fun GithubSearchPagingScreenStateless(
     onDropdownMenuExpanded: (Boolean) -> Unit,
     listState: LazyListState
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-
     AppSurface {
         Column(modifier = modifier) {
             OutlinedTextField(
@@ -103,11 +98,6 @@ private fun GithubSearchPagingScreenStateless(
                 },
                 singleLine = true,
                 maxLines = 1,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    keyboardController?.hide()
-                    onSearch()
-                }),
                 onValueChange = { onValueChange(it) },
                 modifier = Modifier.fillMaxWidth(),
                 isError = query.isEmpty()
@@ -150,6 +140,13 @@ private fun GithubSearchPagingScreenStateless(
                 }
             }
             Spacer(modifier = Modifier.size(8.dp))
+
+            Button(
+                onClick = { onSearch() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Search")
+            }
 
             LazyColumn(state = listState) {
                 items(items = uiState.items) {
