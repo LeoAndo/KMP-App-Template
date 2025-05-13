@@ -1,6 +1,7 @@
 package com.jetbrains.kmpapp.data
 
 import com.jetbrains.kmpapp.domain.exception.AppException
+import com.jetbrains.kmpapp.logError
 import io.ktor.client.network.sockets.*
 import io.ktor.client.plugins.*
 
@@ -25,7 +26,11 @@ internal object KtorHandler {
             is ServerResponseException -> throw AppException.Server(e.message)
             // ktor: それ以外のエラー
             is ResponseException -> throw AppException.Unknown(e.message ?: "Unknown error")
-            else -> throw AppException.Unknown(e.message ?: "Unknown error")
+            else -> {
+                val msg = e.message ?: "Unknown error"
+                logError("KtorHandler", msg, e)
+                throw AppException.Unknown(msg)
+            }
         }
     }
 }

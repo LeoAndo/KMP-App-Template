@@ -3,6 +3,7 @@ package com.jetbrains.kmpapp.data.githubsearch
 import com.jetbrains.kmpapp.SecretKeyProvider
 import com.jetbrains.kmpapp.data.KtorHandler
 import com.jetbrains.kmpapp.domain.exception.AppException
+import com.jetbrains.kmpapp.logError
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -21,8 +22,9 @@ internal class GithubApi(private val json: Json) {
                     encodedPath += url.encodedPath
                 })
                 header("Accept", "application/vnd.github.v3+json")
-                // TODO Uncomment this line if you want to test without setting the token
-                header("Authorization", "Bearer ${SecretKeyProvider.githubAccessToken}")
+                if (SecretKeyProvider.githubAccessToken.isNotEmpty()) {
+                    header("Authorization", "Bearer ${SecretKeyProvider.githubAccessToken}")
+                }
                 header("X-GitHub-Api-Version", "2022-11-28")
             }
             install(HttpTimeout) {
@@ -63,7 +65,10 @@ internal class GithubApi(private val json: Json) {
                                 }
 
                                 // 他の400番台のエラーでもレスポンスBodyの形式がGithubErrorResponseと同じか不明のためエラーメッセージを設定する
-                                else -> throw AppException.Unknown(e.message)
+                                else -> {
+                                    logError("GithubApi", e.message, e)
+                                    throw AppException.Unknown(e.message)
+                                }
                             }
                         }
 
