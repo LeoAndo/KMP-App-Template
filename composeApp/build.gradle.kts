@@ -80,7 +80,7 @@ android {
         val localProperties = project.rootProject.file("local.properties")
         val githubAccessToken = localProperties.inputStream()
             .use { propsStream -> Properties().apply { load(propsStream) } }
-            .getProperty("GITHUB_ACCESS_TOKEN")
+            .getProperty("GITHUB_ACCESS_TOKEN") ?: throw IllegalStateException("GITHUB_ACCESS_TOKEN not found in local.properties")
         buildConfigField("String", "GITHUB_ACCESS_TOKEN", "\"${githubAccessToken}\"")
     }
     packaging {
