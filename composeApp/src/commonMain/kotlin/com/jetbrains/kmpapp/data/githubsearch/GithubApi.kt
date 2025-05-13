@@ -1,5 +1,6 @@
 package com.jetbrains.kmpapp.data.githubsearch
 
+import com.jetbrains.kmpapp.SecretKeyProvider
 import com.jetbrains.kmpapp.data.KtorHandler
 import com.jetbrains.kmpapp.domain.exception.AppException
 import io.ktor.client.*
@@ -20,10 +21,8 @@ internal class GithubApi(private val json: Json) {
                     encodedPath += url.encodedPath
                 })
                 header("Accept", "application/vnd.github.v3+json")
-                header(
-                    "Authorization",
-                    "Bearer $GITHUB_ACCESS_TOKEN"
-                )  // TODO Uncomment this line if you want to test without setting the token
+                // TODO Uncomment this line if you want to test without setting the token
+                header("Authorization", "Bearer ${SecretKeyProvider.githubAccessToken}")
                 header("X-GitHub-Api-Version", "2022-11-28")
             }
             install(HttpTimeout) {
@@ -96,7 +95,5 @@ internal class GithubApi(private val json: Json) {
         const val SEARCH_PER_PAGE = 50
         private const val TIMEOUT_MILLIS: Long = 3 * 1000 // TODO Adjust this value for debugging
         private const val GITHUB_API_DOMAIN = "https://api.github.com/"
-        private const val GITHUB_ACCESS_TOKEN =
-            "YOUR GITHUB ACCESS TOKEN" // TODO Set the token to access the API.
     }
 }

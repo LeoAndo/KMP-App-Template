@@ -14,3 +14,8 @@ internal actual fun launchExternalBrowser(url: String) {
 internal actual fun getUptimeMillis(): Long {
     return SystemClock.uptimeMillis()
 }
+
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+internal actual object SecretKeyProvider {
+    actual val githubAccessToken = BuildConfig.GITHUB_ACCESS_TOKEN
+}
