@@ -17,8 +17,8 @@ internal enum class Question(
         answerIndex = 2
     ),
     Q4(
-        message = "存在する専門学校は？",
-        answers = listOf("日本電子", "アジア電子", "ヨーロッパ電子", "南アフリカ電子"),
+        message = "存在する大学は？",
+        answers = listOf("東京大学", "安藤大学", "伊藤大学", "田中大学"),
         answerIndex = 0
     ),
 }
