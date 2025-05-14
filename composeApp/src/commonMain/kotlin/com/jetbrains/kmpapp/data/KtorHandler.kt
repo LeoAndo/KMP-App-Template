@@ -19,13 +19,13 @@ internal object KtorHandler {
                 throw AppException.Network(e.message ?: "Network error")
             }
             // ktor: 300番台のエラー
-            is RedirectResponseException -> throw AppException.Redirect(e.message)
+            is RedirectResponseException -> throw AppException.Redirect("${e.response.status}: ${e.message}")
             // ktor: 400番台のエラー
-            // is ClientRequestException -> throw AppException.XXXX(e.message)
+            // is ClientRequestException -> throw AppException.XXXX("${e.response.status}: ${e.message}")
             // ktor: 500番台のエラー
-            is ServerResponseException -> throw AppException.Server(e.message)
+            is ServerResponseException -> throw AppException.Server("${e.response.status}: ${e.message}")
             // ktor: それ以外のエラー
-            is ResponseException -> throw AppException.Unknown(e.message ?: "Unknown error")
+            is ResponseException -> throw AppException.Unknown("${e.response.status}: ${e.message}")
             else -> {
                 val msg = e.message ?: "Unknown error"
                 logError("KtorHandler", msg, e)

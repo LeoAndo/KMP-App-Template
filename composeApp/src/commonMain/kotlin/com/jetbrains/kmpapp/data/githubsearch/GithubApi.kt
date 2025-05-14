@@ -26,6 +26,7 @@ internal class GithubApi(private val json: Json) {
                     header("Authorization", "Bearer ${SecretKeyProvider.githubAccessToken}")
                 }
                 header("X-GitHub-Api-Version", "2022-11-28")
+                // header("Accept-Language", "ja-JP")
             }
             install(HttpTimeout) {
                 requestTimeoutMillis = TIMEOUT_MILLIS
@@ -38,33 +39,34 @@ internal class GithubApi(private val json: Json) {
                     when (e) {
                         is ClientRequestException -> { // ktor: 400番台のエラー
                             val errorResponse = e.response
+                            val status = errorResponse.status
                             // APIの仕様に合わせて想定されるエラーのみ処理する
-                            when (errorResponse.status) {
+                            when (status) {
                                 HttpStatusCode.Unauthorized -> { // "Bearer $GITHUB_ACCESS_TOKEN"が不正な場合
                                     val message =
                                         json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
-                                    throw AppException.UnAuthorized(message)
+                                    throw AppException.UnAuthorized("${status}: $message")
                                 }
 
                                 HttpStatusCode.NotFound -> { // endpointが存在しない場合
                                     val message =
                                         json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
-                                    throw AppException.NotFound(message)
+                                    throw AppException.NotFound("${status}: $message")
                                 }
 
                                 HttpStatusCode.Forbidden -> { // requestのrate limitを超えた場合
                                     val message =
                                         json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
-                                    throw AppException.Forbidden(message)
+                                    throw AppException.Forbidden("${status}: $message")
                                 }
 
                                 HttpStatusCode.UnprocessableEntity -> { // requestのパラメータが不正な場合
                                     val message =
                                         json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
-                                    throw AppException.UnprocessableEntity(message)
+                                    throw AppException.UnprocessableEntity("${status}: $message")
                                 }
 
-                                // 他の400番台のエラーでもレスポンスBodyの形式がGithubErrorResponseと同じか不明のためエラーメッセージを設定する
+                                // TODO 他の400番台のエラーでもレスポンスBodyの形式がGithubErrorResponseと同じか不明のためエラーメッセージを設定する
                                 else -> {
                                     logError("GithubApi", e.message, e)
                                     throw AppException.Unknown(e.message)
