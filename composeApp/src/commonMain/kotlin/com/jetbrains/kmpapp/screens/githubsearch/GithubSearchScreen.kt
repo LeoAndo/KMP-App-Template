@@ -137,6 +137,8 @@ private fun SearchScreenStateless(
                         uiState.throwable.message ?: "error occurred. Please try again later."
                     val message = if (uiState.throwable is AppException) {
                         when (uiState.throwable) {
+                            is AppException.Forbidden -> "Please wait a moment and try again as you have reached the request limit."
+                            is AppException.UnAuthorized -> "Unauthorized access. Please check your credentials."
                             is AppException.Network -> "Network error occurred. Please check your network connection."
                             else -> errorMessage
                         }
