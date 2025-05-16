@@ -56,11 +56,9 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.navigation.compose)
 
-            // TODO add paging library - START
-            // val pagingVersion = "3.3.6"
-            // implementation("androidx.paging:paging-compose:$pagingVersion")
-            // implementation("androidx.paging:paging-common:$pagingVersion")
-            // TODO add paging library - END
+            // TODO add preferences datastore library - START
+            implementation(libs.androidx.datastore.preferences)
+            // TODO add preferences datastore library - END
         }
     }
 }
