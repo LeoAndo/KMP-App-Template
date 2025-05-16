@@ -31,3 +31,8 @@ Create Config.xcconfig based on Config.xcconfig.sample and add the following set
 |                    1                     |                     2                      |
 |:----------------------------------------:|:------------------------------------------:|
 | <img src="./images/img_2.png" width=50% /> | <img src="./images/img_3.png" width=50% /> |
+
+## feature:Change App Theme (Use Preferences Datastore) 
+|                     1                      |                     2                      |
+|:------------------------------------------:|:------------------------------------------:|
+| <img src="./images/img_4.png" width=50% /> | <img src="./images/img_5.png" width=50% /> |
