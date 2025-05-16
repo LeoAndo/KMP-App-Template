@@ -21,8 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
@@ -39,85 +37,81 @@ import org.jetbrains.compose.resources.stringResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun QuizScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) {
-    val snackbarHostState = remember { SnackbarHostState() }
     val pagerState = rememberPagerState(pageCount = { Question.entries.size })
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     var isFinishedQuiz by remember { mutableStateOf(false) }
     var collectAnswerCount by remember { mutableStateOf(0) }
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            TopAppBar(title = { Text(Screens.QUIZ.name) }, navigationIcon = {
-                IconButton(onClick = onBackClick) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(Res.string.back))
-                }
-            })
-        },
-        content = { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .padding(12.dp)
-                    .fillMaxSize()
-                    .verticalScroll(scrollState),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                HorizontalPager(
-                    modifier = Modifier.heightIn(min = 400.dp)
-                        .background(color = MaterialTheme.colorScheme.secondary),
-                    state = pagerState,
-                    userScrollEnabled = false,
-                ) { pageIndex ->
-                    Box(
-                        modifier = Modifier.padding(8.dp).fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        val message =
-                            Question.entries.first { it.ordinal == pageIndex }.message
-                        Text(text = message, overflow = TextOverflow.Ellipsis)
+            TopAppBar(
+                title = { Text(Screens.QUIZ.name) },
+                navigationIcon = {
+                    IconButton(onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(Res.string.back))
                     }
                 }
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            Modifier
+                .padding(innerPadding)
+                .padding(12.dp)
+                .fillMaxSize()
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            HorizontalPager(
+                modifier = Modifier.heightIn(min = 400.dp)
+                    .background(color = MaterialTheme.colorScheme.secondary),
+                state = pagerState,
+                userScrollEnabled = false,
+            ) { pageIndex ->
+                Box(
+                    Modifier.padding(8.dp).fillMaxSize(), contentAlignment = Alignment.Center
+                ) {
+                    val message =
+                        Question.entries.first { it.ordinal == pageIndex }.message
+                    Text(text = message, overflow = TextOverflow.Ellipsis)
+                }
+            }
 
-                AnimatedVisibility(isFinishedQuiz) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("${collectAnswerCount}問正解しました。")
-                        Button(onClick = {
-                            scope.launch {
-                                pagerState.scrollToPage(page = 0)
-                                collectAnswerCount = 0
-                                isFinishedQuiz = false
-                            }
-                        }) {
-                            Text("やり直す")
+            AnimatedVisibility(isFinishedQuiz) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("${collectAnswerCount}問正解しました。")
+                    Button(onClick = {
+                        scope.launch {
+                            pagerState.scrollToPage(page = 0)
+                            collectAnswerCount = 0
+                            isFinishedQuiz = false
                         }
-                    }
-                }
-                val question = Question.entries
-                    .first { question -> question.ordinal == pagerState.currentPage }
-                question.answers.forEachIndexed { index, answerText ->
-                    Button(
-                        onClick = {
-                            scope.launch {
-                                isFinishedQuiz =
-                                    Question.entries.size <= pagerState.currentPage + 1
-                                pagerState.scrollToPage(page = pagerState.currentPage + 1)
-                                val msg = if (question.answerIndex == index) {
-                                    collectAnswerCount++
-                                    "正解です！"
-                                } else {
-                                    "不正解です！"
-                                }
-                                snackbarHostState.showSnackbar(msg)
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = !isFinishedQuiz,
-                    ) {
-                        Text(text = answerText, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    }) {
+                        Text("やり直す")
                     }
                 }
             }
-        })
+            val question = Question.entries
+                .first { question -> question.ordinal == pagerState.currentPage }
+            question.answers.forEachIndexed { index, answerText ->
+                Button(
+                    onClick = {
+                        scope.launch {
+                            isFinishedQuiz =
+                                Question.entries.size <= pagerState.currentPage + 1
+                            pagerState.scrollToPage(page = pagerState.currentPage + 1)
+                            if (question.answerIndex == index) { // 正解
+                                collectAnswerCount++
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !isFinishedQuiz,
+                ) {
+                    Text(text = answerText, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
+            }
+        }
+    }
 }

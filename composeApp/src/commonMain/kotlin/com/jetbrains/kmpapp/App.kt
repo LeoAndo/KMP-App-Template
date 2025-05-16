@@ -2,7 +2,7 @@ package com.jetbrains.kmpapp
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,9 +30,7 @@ internal fun App() {
     // Screensを使って表示する画面を切り替える
     MyMaterialTheme(appTheme = currentAppTheme) {
         when (currentScreen) {
-            Screens.GithubSearch -> GithubSearchScreen(onBackClick = {
-                currentScreen = Screens.Init
-            })
+            Screens.GithubSearch -> GithubSearchScreen(onBackClick = { currentScreen = Screens.Init })
 
             Screens.GithubSearchPaging -> GithubSearchPagingScreen()
             Screens.Museum -> MuseumApp()
@@ -40,7 +38,7 @@ internal fun App() {
             Screens.SETTINGS -> {
                 AppSurface {
                     Column(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.wrapContentSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
@@ -62,15 +60,13 @@ internal fun App() {
             Screens.Init -> {
                 AppSurface {
                     Column(
-                        modifier = Modifier.fillMaxSize(),
+                        Modifier.wrapContentSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
                         Screens.entries.filterNot { it == Screens.Init }.forEach { screen ->
-                            Button(
-                                onClick = { currentScreen = screen },
-                            ) {
-                                Text(text = screen.screenName)
+                            Button({ currentScreen = screen }) {
+                                Text(screen.screenName)
                             }
                         }
                     }
