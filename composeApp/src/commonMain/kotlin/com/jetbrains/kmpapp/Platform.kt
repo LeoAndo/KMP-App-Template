@@ -1,5 +1,8 @@
 package com.jetbrains.kmpapp
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+
 // 各Platform APIの実装用のインターフェースをここにまとめる
 internal expect fun launchExternalBrowser(url: String)
 
@@ -16,3 +19,8 @@ internal expect object SecretKeyProvider {
 // デバッグ用のログ出力関数
 internal expect fun logDebug(tag: String, message: String)
 internal expect fun logError(tag: String, message: String, throwable: Throwable? = null)
+
+// DataStoreのインスタンスを提供するexpect宣言
+internal expect fun createDataStore(): DataStore<Preferences>
+
+internal const val dataStoreFileName = "settings.preferences_pb"

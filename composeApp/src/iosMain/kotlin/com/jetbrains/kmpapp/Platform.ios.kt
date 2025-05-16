@@ -1,8 +1,18 @@
 package com.jetbrains.kmpapp
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import kotlinx.cinterop.ExperimentalForeignApi
+import okio.Path.Companion.toPath
+import platform.Foundation.NSDocumentDirectory
+import platform.Foundation.NSFileManager
 import platform.Foundation.NSLog
 import platform.Foundation.NSProcessInfo
 import platform.Foundation.NSURL
+import platform.Foundation.NSUserDomainMask
 import platform.UIKit.UIApplication
 
 internal actual fun launchExternalBrowser(url: String) {
@@ -37,3 +47,19 @@ internal actual fun logError(tag: String, message: String, throwable: Throwable?
     }
     NSLog("[ERROR] [$tag] $fullMessage")
 }
+
+@OptIn(ExperimentalForeignApi::class)
+internal actual fun createDataStore(): DataStore<Preferences> =
+    PreferenceDataStoreFactory.createWithPath(
+        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+        produceFile = {
+        val documentDirectory: NSURL? = NSFileManager.defaultManager.URLForDirectory(
+            directory = NSDocumentDirectory,
+            inDomain = NSUserDomainMask,
+            appropriateForURL = null,
+            create = false,
+            error = null,
+        )
+        val pathStr = requireNotNull(documentDirectory).path + "/$dataStoreFileName"
+        pathStr.toPath()
+    })

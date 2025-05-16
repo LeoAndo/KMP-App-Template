@@ -45,7 +45,7 @@ internal fun QuizScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(Screens.QUIZ.name) },
+                title = { Text(Screens.QUIZ.screenName) },
                 navigationIcon = {
                     IconButton(onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(Res.string.back))

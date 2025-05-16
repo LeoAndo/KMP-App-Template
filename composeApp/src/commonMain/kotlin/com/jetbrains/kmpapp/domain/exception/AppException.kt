@@ -4,6 +4,7 @@ package com.jetbrains.kmpapp.domain.exception
  * アプリケーション固有の例外クラス
  */
 internal sealed class AppException : Exception() {
+    // 通信周りのエラー
     data class UnAuthorized(override val message: String) : AppException()
     data class Forbidden(override val message: String) : AppException()
     data class UnprocessableEntity(override val message: String) : AppException()
@@ -12,4 +13,7 @@ internal sealed class AppException : Exception() {
     data class Redirect(override val message: String) : AppException() // 300番台のエラー
     data class Server(override val message: String) : AppException() // 500番台のエラー
     data class Network(override val message: String) : AppException() // ネットワークエラー
+
+    // ディスクにデータを書き込むときに例外が発生した場合(DataStoreなど)
+    data class DiskWrite(override val message: String) : AppException()
 }

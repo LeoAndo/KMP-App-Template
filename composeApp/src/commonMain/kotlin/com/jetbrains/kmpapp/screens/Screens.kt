@@ -1,10 +1,10 @@
 package com.jetbrains.kmpapp.screens
 
 internal enum class Screens(val screenName: String) {
-    Init("App"),
-    GithubSearch("Ktor Test"),
-    GithubSearchPaging("Ktor & Paging Test"),
-    Museum("Official Example App"),
-    QUIZ("Quiz"),
+    MAIN("Main Screen"),
+    GITHUB_SEARCH("Ktor Test"),
+    GITHUB_SEARCH_PAGING("Ktor & Paging Test"),
+    MUSEUM("Official Example App"),
+    QUIZ("Quiz App"),
     SETTINGS("Settings"),
 }

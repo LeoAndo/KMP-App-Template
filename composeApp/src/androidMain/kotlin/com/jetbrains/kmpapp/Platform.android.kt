@@ -4,6 +4,12 @@ import android.content.Intent
 import android.os.SystemClock
 import android.util.Log
 import androidx.core.net.toUri
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import okio.Path.Companion.toPath
 
 
 internal actual fun launchExternalBrowser(url: String) {
@@ -27,5 +33,21 @@ internal actual fun logDebug(tag: String, message: String) {
 }
 
 internal actual fun logError(tag: String, message: String, throwable: Throwable?) {
-    if (BuildConfig.DEBUG) Log.e(tag, message, throwable)
+    if (BuildConfig.DEBUG) {
+        val fullMessage = if (throwable != null) {
+            "$message: ${throwable.message ?: throwable::class.simpleName}"
+        } else {
+            message
+        }
+        Log.e(tag, fullMessage)
+    }
 }
+
+internal actual fun createDataStore(): DataStore<Preferences> =
+    PreferenceDataStoreFactory.createWithPath(
+        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+        produceFile = {
+            val pathStr =
+                MyApp.instance.applicationContext.filesDir.resolve(dataStoreFileName).absolutePath
+            pathStr.toPath()
+        })
