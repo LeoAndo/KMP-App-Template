@@ -7,15 +7,19 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,22 +33,21 @@ import androidx.compose.ui.unit.dp
 import com.jetbrains.kmpapp.domain.exception.AppException
 import com.jetbrains.kmpapp.launchExternalBrowser
 import com.jetbrains.kmpapp.screens.component.AppError
-import com.jetbrains.kmpapp.screens.component.AppSurface
 import com.jetbrains.kmpapp.screens.component.EmptyScreenContent
 import com.jetbrains.kmpapp.screens.component.AppLoading
+import kmp_app_template.composeapp.generated.resources.Res
+import kmp_app_template.composeapp.generated.resources.back
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-internal fun GithubSearchScreen(modifier: Modifier = Modifier) {
+internal fun GithubSearchScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) {
     var query by rememberSaveable { mutableStateOf("") }
     var sortType by rememberSaveable { mutableStateOf(SortType.STARS) }
     var expanded by rememberSaveable { mutableStateOf(false) }
     val viewModel = koinViewModel<GithubSearchViewModel>()
     SearchScreenStateless(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(WindowInsets.safeDrawing.asPaddingValues())
-            .padding(12.dp),
+        modifier = modifier,
         query = query,
         sortType = sortType,
         uiState = viewModel.uiState,
@@ -53,10 +56,12 @@ internal fun GithubSearchScreen(modifier: Modifier = Modifier) {
         onSortTypeChange = { sortType = it },
         onSearch = { viewModel.searchRepositories(query, 1, sortType.sort) },
         onClickItem = { url -> launchExternalBrowser(url) },
-        onDropdownMenuExpanded = { expanded = it }
+        onDropdownMenuExpanded = { expanded = it },
+        onBackClick = { onBackClick() }
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchScreenStateless(
     modifier: Modifier = Modifier,
@@ -67,13 +72,26 @@ private fun SearchScreenStateless(
     onValueChange: (String) -> Unit,
     onSortTypeChange: (SortType) -> Unit,
     onSearch: () -> Unit,
-    onClickItem: (String) -> Unit = {},
+    onClickItem: (String) -> Unit,
     onDropdownMenuExpanded: (Boolean) -> Unit,
+    onBackClick: () -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    AppSurface {
-        Column(modifier = modifier) {
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Github Search") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(Res.string.back))
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues).padding(12.dp)) {
             OutlinedTextField(
                 value = query,
                 label = {

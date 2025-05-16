@@ -6,4 +6,5 @@ internal enum class Screens(val screenName: String) {
     GithubSearchPaging("Ktor & Paging Test"),
     Museum("Official Example App"),
     QUIZ("Quiz"),
+    SETTINGS("Settings"),
 }

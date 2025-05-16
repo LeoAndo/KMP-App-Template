@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,29 +18,60 @@ import com.jetbrains.kmpapp.screens.githubsearch.GithubSearchScreen
 import com.jetbrains.kmpapp.screens.githubsearch.paging.GithubSearchPagingScreen
 import com.jetbrains.kmpapp.screens.museum.MuseumApp
 import com.jetbrains.kmpapp.screens.quiz.QuizScreen
+import com.jetbrains.kmpapp.screens.theme.AppTheme
+import com.jetbrains.kmpapp.screens.theme.MyMaterialTheme
 
 // entry point.
 @Composable
 internal fun App() {
-    var screens by remember { mutableStateOf(Screens.Init) }
+    var currentScreen by rememberSaveable { mutableStateOf(Screens.Init) }
+    var currentAppTheme by rememberSaveable { mutableStateOf(AppTheme.TYPE01) }
+
     // Screensを使って表示する画面を切り替える
-    when (screens) {
-        Screens.GithubSearch -> GithubSearchScreen()
-        Screens.GithubSearchPaging -> GithubSearchPagingScreen()
-        Screens.Museum -> MuseumApp()
-        Screens.QUIZ -> QuizScreen()
-        Screens.Init -> {
-            AppSurface {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Screens.entries.filterNot { it == Screens.Init }.forEach { screen ->
-                        Button(
-                            onClick = { screens = screen },
-                        ) {
-                            Text(text = screen.screenName)
+    MyMaterialTheme(appTheme = currentAppTheme) {
+        when (currentScreen) {
+            Screens.GithubSearch -> GithubSearchScreen(onBackClick = {
+                currentScreen = Screens.Init
+            })
+
+            Screens.GithubSearchPaging -> GithubSearchPagingScreen()
+            Screens.Museum -> MuseumApp()
+            Screens.QUIZ -> QuizScreen(onBackClick = { currentScreen = Screens.Init })
+            Screens.SETTINGS -> {
+                AppSurface {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = "Change App Theme")
+                        AppTheme.entries.forEach { appTheme ->
+                            Button(
+                                onClick = {
+                                    currentAppTheme = appTheme
+                                    currentScreen = Screens.Init
+                                },
+                            ) {
+                                Text(text = appTheme.name)
+                            }
+                        }
+                    }
+                }
+            }
+
+            Screens.Init -> {
+                AppSurface {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Screens.entries.filterNot { it == Screens.Init }.forEach { screen ->
+                            Button(
+                                onClick = { currentScreen = screen },
+                            ) {
+                                Text(text = screen.screenName)
+                            }
                         }
                     }
                 }
