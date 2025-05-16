@@ -5,6 +5,7 @@ import android.os.SystemClock
 import android.util.Log
 import androidx.core.net.toUri
 
+
 internal actual fun launchExternalBrowser(url: String) {
     val intent = Intent(Intent.ACTION_VIEW, url.toUri()).apply {
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

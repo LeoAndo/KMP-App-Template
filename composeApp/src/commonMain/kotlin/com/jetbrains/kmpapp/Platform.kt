@@ -13,5 +13,6 @@ internal expect object SecretKeyProvider {
     val githubAccessToken: String
 }
 
+// デバッグ用のログ出力関数
 internal expect fun logDebug(tag: String, message: String)
 internal expect fun logError(tag: String, message: String, throwable: Throwable? = null)
