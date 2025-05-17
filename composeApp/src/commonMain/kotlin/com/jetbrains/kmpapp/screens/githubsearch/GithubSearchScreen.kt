@@ -150,17 +150,12 @@ private fun SearchScreenStateless(
                 UiState.Initial -> EmptyScreenContent(Modifier.fillMaxSize())
                 UiState.Loading -> AppLoading(modifier = Modifier.fillMaxSize())
                 is UiState.Failure -> {
-                    val message = when (uiState.throwable) {
-                        is AppException.Forbidden -> "Please wait a moment and try again as you have reached the request limit."
-                        is AppException.UnAuthorized -> "Unauthorized access. Please check your credentials."
-                        is AppException.Network -> "Network error occurred. Please check your network connection."
+                    // 画面側で想定しないエラーに関しては予期しないエラーとしてメッセージ表示する
+                    val message = when (val throwable = uiState.throwable) {
+                        is AppException.Forbidden, is AppException.UnAuthorized, is AppException.Network -> throwable.message
                         else -> "An Unexpected Error has occurred."
                     }
-                    AppAlertDialog(
-                        titleText = "Error",
-                        messageText = message,
-                        confirmText = "OK"
-                    )
+                    AppAlertDialog(titleText = "Error", messageText = message, confirmText = "OK")
                 }
 
                 is UiState.Success -> {

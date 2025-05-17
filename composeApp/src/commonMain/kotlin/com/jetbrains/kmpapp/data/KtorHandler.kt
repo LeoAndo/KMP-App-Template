@@ -14,9 +14,11 @@ internal object KtorHandler {
      */
     @Throws(AppException::class)
     fun handleResponseException(e: Throwable) {
+        val msg = e.message ?: "Unknown error"
+        logError("KtorHandler", msg, e)
         when (e) {
             is HttpRequestTimeoutException, is ConnectTimeoutException, is SocketTimeoutException -> {
-                throw AppException.Network(e.message ?: "Network error")
+                throw AppException.Network("Network error occurred. Please check your network connection.")
             }
             // ktor: 300番台のエラー
             is RedirectResponseException -> throw AppException.Redirect("${e.response.status}: ${e.message}")
@@ -26,11 +28,7 @@ internal object KtorHandler {
             is ServerResponseException -> throw AppException.Server("${e.response.status}: ${e.message}")
             // ktor: それ以外のエラー
             is ResponseException -> throw AppException.Unknown("${e.response.status}: ${e.message}")
-            else -> {
-                val msg = e.message ?: "Unknown error"
-                logError("KtorHandler", msg, e)
-                throw AppException.Unknown(msg)
-            }
+            else -> throw AppException.Unknown(msg)
         }
     }
 }

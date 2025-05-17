@@ -39,7 +39,8 @@ internal class GithubApi(private val json: Json) {
                     when (e) {
                         is ClientRequestException -> { // ktor: 400番台のエラー
                             val errorResponse = e.response
-                            logError("GithubApi", e.toString())
+                            logError("GithubApi", errorResponse.toString())
+
                             // APIの仕様に合わせて想定されるエラーのみ処理する
                             when (val status = errorResponse.status) {
                                 HttpStatusCode.Unauthorized -> { // "Bearer $GITHUB_ACCESS_TOKEN"が不正な場合
@@ -67,10 +68,7 @@ internal class GithubApi(private val json: Json) {
                                 }
 
                                 // TODO 他の400番台のエラーでもレスポンスBodyの形式がGithubErrorResponseと同じか不明のためエラーメッセージを設定する
-                                else -> {
-                                    logError("GithubApi", e.message, e)
-                                    throw AppException.Unknown("${status}: ${e.message}")
-                                }
+                                else -> throw AppException.Unknown("${status}: ${e.message}")
                             }
                         }
 
