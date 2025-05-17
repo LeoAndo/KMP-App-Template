@@ -1,7 +1,7 @@
 # base project (commit hash)
 
 https://github.com/Kotlin/KMP-App-Template<br>
-https://github.com/Kotlin/KMP-App-Template/commit/4d0a6a33b312ac78a336cdf4ead1d0debb6c9ba5
+https://github.com/Kotlin/KMP-App-Template/commit/0d4ee4c179274cab1ddf2ef2da80398b9fef6573
 
 # development environment
 
