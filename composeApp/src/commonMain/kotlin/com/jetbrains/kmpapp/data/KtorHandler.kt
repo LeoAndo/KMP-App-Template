@@ -14,6 +14,7 @@ internal object KtorHandler {
      */
     @Throws(AppException::class)
     fun handleResponseException(e: Throwable) {
+        // jp) ここでエラーメッセージをstringResource(Res.string.xxx)などを使い多言語対応するのも良いかも
         val msg = e.message ?: "Unknown error"
         logError("KtorHandler", msg, e)
         when (e) {

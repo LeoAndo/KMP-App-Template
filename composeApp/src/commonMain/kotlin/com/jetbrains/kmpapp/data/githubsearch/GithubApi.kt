@@ -36,6 +36,7 @@ internal class GithubApi(private val json: Json) {
             expectSuccess = true // HttpResponseValidatorで必要な設定.
             HttpResponseValidator {
                 handleResponseExceptionWithRequest { e, _ ->
+                    // jp) Web API固有のエラーハンドリングなので、ここでエラーメッセージをstringResource(Res.string.xxx)などを使い多言語対応するのも良いかも
                     when (e) {
                         is ClientRequestException -> { // ktor: 400番台のエラー
                             val errorResponse = e.response
