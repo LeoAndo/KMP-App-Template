@@ -21,6 +21,5 @@ internal expect fun logDebug(tag: String, message: String)
 internal expect fun logError(tag: String, message: String, throwable: Throwable? = null)
 
 // DataStoreのインスタンスを提供するexpect宣言
-internal expect fun createDataStore(): DataStore<Preferences>
-
-internal const val dataStoreFileName = "settings.preferences_pb"
+internal expect fun createSettingsDataStore(): DataStore<Preferences>
+internal const val settingsDataStoreFileName = "settings.preferences_pb"

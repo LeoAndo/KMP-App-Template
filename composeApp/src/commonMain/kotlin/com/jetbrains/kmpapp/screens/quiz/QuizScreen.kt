@@ -50,12 +50,12 @@ internal fun QuizScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) 
                     IconButton(onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(Res.string.back))
                     }
-                }
+                },
             )
         }
     ) { innerPadding ->
         Column(
-            Modifier
+            modifier
                 .padding(innerPadding)
                 .padding(12.dp)
                 .verticalScroll(scrollState),

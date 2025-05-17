@@ -43,11 +43,11 @@ internal actual fun logError(tag: String, message: String, throwable: Throwable?
     }
 }
 
-internal actual fun createDataStore(): DataStore<Preferences> =
+internal actual fun createSettingsDataStore(): DataStore<Preferences> =
     PreferenceDataStoreFactory.createWithPath(
         corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
         produceFile = {
             val pathStr =
-                MyApp.instance.applicationContext.filesDir.resolve(dataStoreFileName).absolutePath
+                MyApp.instance.applicationContext.filesDir.resolve(settingsDataStoreFileName).absolutePath
             pathStr.toPath()
         })

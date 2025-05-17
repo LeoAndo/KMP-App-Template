@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -43,44 +42,43 @@ internal fun App() {
     val currentAppTheme by appViewModel.currentTheme.collectAsState()
 
     MyMaterialTheme(appTheme = currentAppTheme) {
-        appViewModel.errorState?.let { errorState ->
-            // エラーが発生している場合はダイアログを表示する
-            val errorMessage = when (errorState) {
-                is AppException.DiskWrite -> "設定値の保存に失敗しました"
-                else -> "予期せぬエラーが発生しました"
-            }
-            AlertDialog(
-                onDismissRequest = { appViewModel.clearError() },
-                title = { Text("エラー") },
-                text = { Text(errorMessage) },
-                confirmButton = { Button(onClick = { appViewModel.clearError() }) { Text("OK") } }
-            )
-        }
-
-        when (currentScreen) {
-            Screens.MUSEUM -> MuseumApp()
-            Screens.GITHUB_SEARCH -> GithubSearchScreen(onBackClick = {
-                currentScreen = Screens.MAIN
-            })
-
-            Screens.GITHUB_SEARCH_PAGING -> {
-                GithubSearchPagingScreen(
-                    modifier = Modifier.fillMaxSize()
-                        .padding(WindowInsets.safeDrawing.asPaddingValues()).padding(12.dp)
+        AppSurface {
+            appViewModel.errorState?.let { errorState ->
+                // エラーが発生している場合はダイアログを表示する
+                val errorMessage = when (errorState) {
+                    is AppException.DiskWrite -> "設定値の保存に失敗しました"
+                    else -> "予期せぬエラーが発生しました"
+                }
+                AlertDialog(
+                    onDismissRequest = { appViewModel.clearError() },
+                    title = { Text("エラー") },
+                    text = { Text(errorMessage) },
+                    confirmButton = { Button(onClick = { appViewModel.clearError() }) { Text("OK") } }
                 )
             }
 
-            Screens.QUIZ -> QuizScreen(onBackClick = { currentScreen = Screens.MAIN })
-            Screens.SETTINGS -> SettingsScreen(
-                modifier = Modifier.fillMaxSize(),
-                onBackClick = { currentScreen = Screens.MAIN },
-                onThemeChange = { appViewModel.changeTheme(it) }
-            )
+            when (currentScreen) {
+                Screens.MUSEUM -> MuseumApp()
+                Screens.GITHUB_SEARCH -> GithubSearchScreen(onBackClick = {
+                    currentScreen = Screens.MAIN
+                })
 
-            Screens.MAIN -> {
-                AppSurface {
+                Screens.GITHUB_SEARCH_PAGING -> {
+                    GithubSearchPagingScreen(
+                        modifier = Modifier.fillMaxSize()
+                            .padding(WindowInsets.safeDrawing.asPaddingValues()).padding(12.dp)
+                    )
+                }
+
+                Screens.QUIZ -> QuizScreen(onBackClick = { currentScreen = Screens.MAIN })
+                Screens.SETTINGS -> SettingsScreen(
+                    modifier = Modifier.fillMaxSize(),
+                    onBackClick = { currentScreen = Screens.MAIN },
+                    onThemeChange = { appViewModel.changeTheme(it) }
+                )
+
+                Screens.MAIN -> {
                     Column(
-                        Modifier.wrapContentSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {

@@ -49,7 +49,7 @@ internal actual fun logError(tag: String, message: String, throwable: Throwable?
 }
 
 @OptIn(ExperimentalForeignApi::class)
-internal actual fun createDataStore(): DataStore<Preferences> =
+internal actual fun createSettingsDataStore(): DataStore<Preferences> =
     PreferenceDataStoreFactory.createWithPath(
         corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
         produceFile = {
@@ -60,6 +60,6 @@ internal actual fun createDataStore(): DataStore<Preferences> =
             create = false,
             error = null,
         )
-        val pathStr = requireNotNull(documentDirectory).path + "/$dataStoreFileName"
+        val pathStr = requireNotNull(documentDirectory).path + "/$settingsDataStoreFileName"
         pathStr.toPath()
     })

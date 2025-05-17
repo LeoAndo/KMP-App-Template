@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jetbrains.kmpapp.data.settings.ThemeDataStore
+import com.jetbrains.kmpapp.data.settings.SettingsDataStore
 import com.jetbrains.kmpapp.screens.theme.AppTheme
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-internal class AppViewModel(private val themeDataStore: ThemeDataStore) : ViewModel() {
+internal class AppViewModel(private val settingsDataStore: SettingsDataStore) : ViewModel() {
 
     var errorState by mutableStateOf<Throwable?>(null)
         private set
@@ -22,7 +22,7 @@ internal class AppViewModel(private val themeDataStore: ThemeDataStore) : ViewMo
         errorState = exception
     }
 
-    val currentTheme: StateFlow<AppTheme> = themeDataStore.selectedTheme.stateIn(
+    val currentTheme: StateFlow<AppTheme> = settingsDataStore.selectedTheme.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         AppTheme.TYPE01
@@ -30,7 +30,7 @@ internal class AppViewModel(private val themeDataStore: ThemeDataStore) : ViewMo
 
     fun changeTheme(theme: AppTheme) {
         viewModelScope.launch(coroutineExceptionHandler) {
-            themeDataStore.saveTheme(theme)
+            settingsDataStore.saveTheme(theme)
         }
     }
 

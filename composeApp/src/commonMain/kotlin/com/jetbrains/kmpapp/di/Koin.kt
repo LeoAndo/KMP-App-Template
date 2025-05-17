@@ -1,6 +1,5 @@
 package com.jetbrains.kmpapp.di
 
-import com.jetbrains.kmpapp.createDataStore
 import com.jetbrains.kmpapp.data.githubsearch.GithubApi
 import com.jetbrains.kmpapp.screens.githubsearch.GithubSearchViewModel
 import com.jetbrains.kmpapp.screens.githubsearch.paging.GithubSearchPagingViewModel
@@ -9,7 +8,7 @@ import com.jetbrains.kmpapp.data.museum.KtorMuseumApi
 import com.jetbrains.kmpapp.data.museum.MuseumApi
 import com.jetbrains.kmpapp.data.museum.MuseumRepository
 import com.jetbrains.kmpapp.data.museum.MuseumStorage
-import com.jetbrains.kmpapp.data.settings.ThemeDataStore
+import com.jetbrains.kmpapp.data.settings.SettingsDataStore
 import com.jetbrains.kmpapp.screens.museum.detail.DetailViewModel
 import com.jetbrains.kmpapp.screens.museum.list.ListViewModel
 import com.jetbrains.kmpapp.AppViewModel
@@ -41,8 +40,7 @@ internal val dataModule = module {
     single<GithubApi> { GithubApi(get()) }
 
     // 各種DataStoreのDI設定
-    single { createDataStore() }
-    single { ThemeDataStore(get()) }
+    single { SettingsDataStore() }
 
     // CoroutineScopeのDI設定 - Unit Testを書く際にDispatchersを切り替えるために必要 - START
     single<CoroutineDispatcher>(named("IoDispatcher")) { Dispatchers.IO }
