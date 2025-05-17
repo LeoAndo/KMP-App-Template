@@ -12,7 +12,7 @@ import com.jetbrains.kmpapp.data.museum.MuseumStorage
 import com.jetbrains.kmpapp.data.settings.ThemeDataStore
 import com.jetbrains.kmpapp.screens.museum.detail.DetailViewModel
 import com.jetbrains.kmpapp.screens.museum.list.ListViewModel
-import com.jetbrains.kmpapp.screens.settings.SettingsViewModel
+import com.jetbrains.kmpapp.AppViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +61,7 @@ internal val viewModelModule = module {
     factoryOf(::DetailViewModel)
     factoryOf(::GithubSearchViewModel)
     factoryOf(::GithubSearchPagingViewModel)
-    factoryOf(::SettingsViewModel)
+    factoryOf(::AppViewModel)
 }
 
 fun initKoin() {

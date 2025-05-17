@@ -2,7 +2,6 @@ package com.jetbrains.kmpapp.screens.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -26,7 +25,7 @@ import org.jetbrains.compose.resources.stringResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingsScreen(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier, // previewでテストしやすくするため、呼び出し元でmodifierの設定を行う
     onBackClick: () -> Unit,
     onThemeChange: (AppTheme) -> Unit
 ) {
@@ -46,10 +45,7 @@ internal fun SettingsScreen(
         }
     ) { innerPadding ->
         Column(
-            modifier = modifier
-                .padding(innerPadding)
-                .padding(12.dp)
-                .fillMaxSize(),
+            modifier = modifier.padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically)
         ) {

@@ -58,7 +58,6 @@ internal fun QuizScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit) 
             Modifier
                 .padding(innerPadding)
                 .padding(12.dp)
-                .fillMaxSize()
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,

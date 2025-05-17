@@ -1,4 +1,4 @@
-package com.jetbrains.kmpapp.screens.settings
+package com.jetbrains.kmpapp
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-internal class SettingsViewModel(private val themeDataStore: ThemeDataStore) : ViewModel() {
+internal class AppViewModel(private val themeDataStore: ThemeDataStore) : ViewModel() {
 
     var errorState by mutableStateOf<Throwable?>(null)
         private set

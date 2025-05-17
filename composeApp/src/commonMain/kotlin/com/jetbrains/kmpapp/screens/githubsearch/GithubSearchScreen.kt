@@ -32,7 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jetbrains.kmpapp.domain.exception.AppException
 import com.jetbrains.kmpapp.launchExternalBrowser
-import com.jetbrains.kmpapp.screens.component.AppError
+import com.jetbrains.kmpapp.screens.component.AppAlertDialog
 import com.jetbrains.kmpapp.screens.component.EmptyScreenContent
 import com.jetbrains.kmpapp.screens.component.AppLoading
 import kmp_app_template.composeapp.generated.resources.Res
@@ -79,7 +79,6 @@ private fun SearchScreenStateless(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
-        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = { Text(text = "Github Search") },
@@ -91,7 +90,7 @@ private fun SearchScreenStateless(
             )
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues).padding(12.dp)) {
+        Column(modifier = modifier.padding(paddingValues).padding(12.dp)) {
             OutlinedTextField(
                 value = query,
                 label = {
@@ -151,22 +150,16 @@ private fun SearchScreenStateless(
                 UiState.Initial -> EmptyScreenContent(Modifier.fillMaxSize())
                 UiState.Loading -> AppLoading(modifier = Modifier.fillMaxSize())
                 is UiState.Failure -> {
-                    val errorMessage =
-                        uiState.throwable.message ?: "error occurred. Please try again later."
-                    val message = if (uiState.throwable is AppException) {
-                        when (uiState.throwable) {
-                            is AppException.Forbidden -> "Please wait a moment and try again as you have reached the request limit."
-                            is AppException.UnAuthorized -> "Unauthorized access. Please check your credentials."
-                            is AppException.Network -> "Network error occurred. Please check your network connection."
-                            else -> errorMessage
-                        }
-                    } else {
-                        errorMessage
+                    val message = when (uiState.throwable) {
+                        is AppException.Forbidden -> "Please wait a moment and try again as you have reached the request limit."
+                        is AppException.UnAuthorized -> "Unauthorized access. Please check your credentials."
+                        is AppException.Network -> "Network error occurred. Please check your network connection."
+                        else -> "An Unexpected Error has occurred."
                     }
-                    AppError(
-                        message = message,
-                        onReload = onSearch,
-                        modifier = Modifier.fillMaxSize()
+                    AppAlertDialog(
+                        titleText = "Error",
+                        messageText = message,
+                        confirmText = "OK"
                     )
                 }
 

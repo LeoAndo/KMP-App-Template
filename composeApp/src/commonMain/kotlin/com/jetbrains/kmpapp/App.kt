@@ -2,6 +2,11 @@ package com.jetbrains.kmpapp
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -14,9 +19,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.jetbrains.kmpapp.domain.exception.AppException
 import com.jetbrains.kmpapp.screens.Screens
-import com.jetbrains.kmpapp.screens.settings.SettingsViewModel
 import com.jetbrains.kmpapp.screens.component.AppSurface
 import com.jetbrains.kmpapp.screens.githubsearch.GithubSearchScreen
 import com.jetbrains.kmpapp.screens.githubsearch.paging.GithubSearchPagingScreen
@@ -34,9 +39,8 @@ internal fun App() {
     var currentScreen by rememberSaveable { mutableStateOf(Screens.MAIN) }
 
     // ThemeViewModelを取得
-    val appViewModel: SettingsViewModel = koinViewModel()
+    val appViewModel = koinViewModel<AppViewModel>()
     val currentAppTheme by appViewModel.currentTheme.collectAsState()
-
 
     MyMaterialTheme(appTheme = currentAppTheme) {
         appViewModel.errorState?.let { errorState ->
@@ -54,14 +58,21 @@ internal fun App() {
         }
 
         when (currentScreen) {
+            Screens.MUSEUM -> MuseumApp()
             Screens.GITHUB_SEARCH -> GithubSearchScreen(onBackClick = {
                 currentScreen = Screens.MAIN
             })
 
-            Screens.GITHUB_SEARCH_PAGING -> GithubSearchPagingScreen()
-            Screens.MUSEUM -> MuseumApp()
+            Screens.GITHUB_SEARCH_PAGING -> {
+                GithubSearchPagingScreen(
+                    modifier = Modifier.fillMaxSize()
+                        .padding(WindowInsets.safeDrawing.asPaddingValues()).padding(12.dp)
+                )
+            }
+
             Screens.QUIZ -> QuizScreen(onBackClick = { currentScreen = Screens.MAIN })
             Screens.SETTINGS -> SettingsScreen(
+                modifier = Modifier.fillMaxSize(),
                 onBackClick = { currentScreen = Screens.MAIN },
                 onThemeChange = { appViewModel.changeTheme(it) }
             )

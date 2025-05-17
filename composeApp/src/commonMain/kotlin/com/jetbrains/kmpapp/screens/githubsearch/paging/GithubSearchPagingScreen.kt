@@ -58,10 +58,7 @@ internal fun GithubSearchPagingScreen(modifier: Modifier = Modifier) {
     }
 
     GithubSearchPagingScreenStateless(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(WindowInsets.safeDrawing.asPaddingValues())
-            .padding(12.dp),
+        modifier = modifier,
         query = query,
         sortType = sortType,
         uiState = viewModel.uiState,
@@ -196,23 +193,13 @@ private fun GithubSearchPagingScreenStateless(
             }
 
             if (uiState.throwable != null) {
-                val errorMessage =
-                    uiState.throwable.message ?: "error occurred. Please try again later."
-                val message = if (uiState.throwable is AppException) {
-                    when (uiState.throwable) {
-                        is AppException.Forbidden -> "Please wait a moment and try again as you have reached the request limit."
-                        is AppException.UnAuthorized -> "Unauthorized access. Please check your credentials."
-                        is AppException.Network -> "Network error occurred. Please check your network connection."
-                        else -> errorMessage
-                    }
-                } else {
-                    errorMessage
+                val message = when (uiState.throwable) {
+                    is AppException.Forbidden -> "Please wait a moment and try again as you have reached the request limit."
+                    is AppException.UnAuthorized -> "Unauthorized access. Please check your credentials."
+                    is AppException.Network -> "Network error occurred. Please check your network connection."
+                    else -> "An Unexpected Error has occurred."
                 }
-                AppAlertDialog(
-                    titleText = "Error",
-                    messageText = message,
-                    confirmText = "OK",
-                )
+                AppAlertDialog(titleText = "Error", messageText = message, confirmText = "OK")
             }
         }
     }
