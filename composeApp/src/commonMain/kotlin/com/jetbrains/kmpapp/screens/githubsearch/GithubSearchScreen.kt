@@ -4,11 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -26,8 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jetbrains.kmpapp.domain.exception.AppException
@@ -76,7 +73,6 @@ private fun SearchScreenStateless(
     onDropdownMenuExpanded: (Boolean) -> Unit,
     onBackClick: () -> Unit,
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         topBar = {
@@ -98,11 +94,6 @@ private fun SearchScreenStateless(
                 },
                 singleLine = true,
                 maxLines = 1,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    keyboardController?.hide()
-                    onSearch()
-                }),
                 onValueChange = { onValueChange(it) },
                 modifier = Modifier.fillMaxWidth(),
                 isError = query.isEmpty()
@@ -145,6 +136,13 @@ private fun SearchScreenStateless(
                 }
             }
             Spacer(modifier = Modifier.size(8.dp))
+
+            Button(
+                onClick = { onSearch() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Search")
+            }
 
             when (uiState) {
                 UiState.Initial -> EmptyScreenContent(Modifier.fillMaxSize())
