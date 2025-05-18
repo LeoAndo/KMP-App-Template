@@ -69,7 +69,7 @@ internal class GithubApi(private val json: Json) {
                                 }
 
                                 // TODO 他の400番台のエラーでもレスポンスBodyの形式がGithubErrorResponseと同じか不明のためエラーメッセージを設定する
-                                else -> throw AppException.Unknown("${status}: ${e.message}")
+                                else -> throw AppException.Unexpected("${status}: ${e.message}")
                             }
                         }
 

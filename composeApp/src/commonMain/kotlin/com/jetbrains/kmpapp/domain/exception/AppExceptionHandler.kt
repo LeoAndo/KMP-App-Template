@@ -17,7 +17,7 @@ internal object AppExceptionHandler {
                 is androidx.datastore.core.IOException -> throw throw AppException.DiskWrite(msg)
                 else -> {
                     logError("AppExceptionHandler", msg, e) // 予期しないエラーのみログ出力
-                    throw AppException.Unknown(msg)
+                    throw AppException.Unexpected(msg)
                 }
             }
         }

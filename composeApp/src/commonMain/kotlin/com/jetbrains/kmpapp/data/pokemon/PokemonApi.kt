@@ -40,7 +40,7 @@ internal class PokemonApi(private val json: Json) {
                                     throw AppException.NotFound("Pokemonが見つかりませんでした")
                                 }
 
-                                else -> throw AppException.Unknown("${status}: ${e.message}")
+                                else -> throw AppException.Unexpected("${status}: ${e.message}")
                             }
                         }
 

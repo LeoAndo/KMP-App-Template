@@ -28,8 +28,8 @@ internal object KtorHandler {
             // ktor: 500番台のエラー
             is ServerResponseException -> throw AppException.Server("${e.response.status}: ${e.message}")
             // ktor: それ以外のエラー
-            is ResponseException -> throw AppException.Unknown("${e.response.status}: ${e.message}")
-            else -> throw AppException.Unknown(msg)
+            is ResponseException -> throw AppException.Unexpected("${e.response.status}: ${e.message}")
+            else -> throw AppException.Unexpected(msg)
         }
     }
 }
