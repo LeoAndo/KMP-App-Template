@@ -38,4 +38,6 @@ Create Config.xcconfig based on Config.xcconfig.sample and add the following set
 | <img src="./images/img_4.png" width=50% /> | <img src="./images/img_5.png" width=50% /> |
 
 ## Pokemon API (Use Ktor) 
-<img src="./images/img_7.png" width=50% />
+|                     1                      |                     2                      |
+|:------------------------------------------:|:------------------------------------------:|
+| <img src="./images/img_7.png" width=50% /> | <img src="./images/img_7.png" width=50% /> |
