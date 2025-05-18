@@ -33,7 +33,8 @@ internal fun List<PokemonResult>.toModels(): List<PokemonModel> {
             url = result.url,
             frontDefaultPictureUrl = result.url.getFrontDefaultPictureUrl(),
             backDefaultPictureUrl = result.url.getBackDefaultPictureUrl(),
-            gitUrl = result.url.getGifUrl()
+            gitUrl = result.url.getGifUrl(),
+            criesLatestUrl = result.url.getCriesLatestUrl()
         )
     }
 }
@@ -53,3 +54,5 @@ internal fun String.getBackDefaultPictureUrl(): String =
 
 internal fun String.getGifUrl(): String =
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${extractId()}.gif"
+
+internal fun String.getCriesLatestUrl(): String = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${extractId()}.ogg"
