@@ -10,8 +10,10 @@ import com.jetbrains.kmpapp.data.museum.MuseumRepository
 import com.jetbrains.kmpapp.data.museum.MuseumStorage
 import com.jetbrains.kmpapp.data.settings.SettingsDataStore
 import com.jetbrains.kmpapp.screens.museum.detail.DetailViewModel
+import com.jetbrains.kmpapp.screens.pokemon.PokemonPagingViewModel
 import com.jetbrains.kmpapp.screens.museum.list.ListViewModel
 import com.jetbrains.kmpapp.AppViewModel
+import com.jetbrains.kmpapp.data.pokemon.PokemonApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +39,8 @@ internal val dataModule = module {
     }
 
     // GithubAPI関連のDI設定
-    single<GithubApi> { GithubApi(get()) }
+    single { GithubApi(get()) }
+    single { PokemonApi(get()) }
 
     // 各種DataStoreのDI設定
     single { SettingsDataStore() }
@@ -60,6 +63,7 @@ internal val viewModelModule = module {
     factoryOf(::GithubSearchViewModel)
     factoryOf(::GithubSearchPagingViewModel)
     factoryOf(::AppViewModel)
+    factoryOf(::PokemonPagingViewModel)
 }
 
 fun initKoin() {

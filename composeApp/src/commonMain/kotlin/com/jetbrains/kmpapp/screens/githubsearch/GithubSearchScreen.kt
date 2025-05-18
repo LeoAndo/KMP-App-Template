@@ -160,7 +160,7 @@ private fun SearchScreenStateless(
 
                 is UiState.Success -> {
                     LazyColumn {
-                        items(items = uiState.items) {
+                        items(items = uiState.items, key = { it.id }) {
                             it.let { item ->
                                 Card(
                                     modifier = Modifier.clickable { onClickItem(item.htmlUrl) }

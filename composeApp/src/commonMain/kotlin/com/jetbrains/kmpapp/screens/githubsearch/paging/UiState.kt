@@ -1,7 +1,6 @@
 package com.jetbrains.kmpapp.screens.githubsearch.paging
 
 import com.jetbrains.kmpapp.domain.model.RepositorySummary
-import com.jetbrains.kmpapp.getUptimeMillis
 
 internal data class UiState(
     val items: List<RepositorySummary> = emptyList(),

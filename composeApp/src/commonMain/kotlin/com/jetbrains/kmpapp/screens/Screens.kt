@@ -7,4 +7,5 @@ internal enum class Screens(val screenName: String) {
     MUSEUM("Official Example App"),
     QUIZ("Quiz App"),
     SETTINGS("Settings"),
+    POKEMON("Pokemon API"),
 }

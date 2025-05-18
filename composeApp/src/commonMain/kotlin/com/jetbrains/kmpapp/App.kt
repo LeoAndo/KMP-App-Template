@@ -11,7 +11,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -19,12 +18,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jetbrains.kmpapp.domain.exception.AppException
 import com.jetbrains.kmpapp.screens.Screens
 import com.jetbrains.kmpapp.screens.component.AppSurface
 import com.jetbrains.kmpapp.screens.githubsearch.GithubSearchScreen
 import com.jetbrains.kmpapp.screens.githubsearch.paging.GithubSearchPagingScreen
 import com.jetbrains.kmpapp.screens.museum.MuseumApp
+import com.jetbrains.kmpapp.screens.pokemon.PokemonPagingScreen
 import com.jetbrains.kmpapp.screens.quiz.QuizScreen
 import com.jetbrains.kmpapp.screens.settings.SettingsScreen
 import com.jetbrains.kmpapp.screens.theme.MyMaterialTheme
@@ -39,7 +40,7 @@ internal fun App() {
 
     // ThemeViewModelを取得
     val appViewModel = koinViewModel<AppViewModel>()
-    val currentAppTheme by appViewModel.currentTheme.collectAsState()
+    val currentAppTheme by appViewModel.currentTheme.collectAsStateWithLifecycle()
 
     MyMaterialTheme(appTheme = currentAppTheme) {
         AppSurface {
@@ -69,6 +70,11 @@ internal fun App() {
                             .padding(WindowInsets.safeDrawing.asPaddingValues()).padding(12.dp)
                     )
                 }
+
+                Screens.POKEMON -> PokemonPagingScreen(
+                    modifier = Modifier.fillMaxSize()
+                        .padding(WindowInsets.safeDrawing.asPaddingValues()).padding(12.dp)
+                )
 
                 Screens.QUIZ -> QuizScreen(onBackClick = { currentScreen = Screens.MAIN })
                 Screens.SETTINGS -> SettingsScreen(

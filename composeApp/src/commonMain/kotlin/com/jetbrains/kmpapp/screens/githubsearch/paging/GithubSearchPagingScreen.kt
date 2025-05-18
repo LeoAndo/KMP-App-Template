@@ -81,7 +81,7 @@ private fun GithubSearchPagingScreenStateless(
     onValueChange: (String) -> Unit,
     onSortTypeChange: (SortType) -> Unit,
     onSearch: () -> Unit,
-    onClickItem: (String) -> Unit = {},
+    onClickItem: (String) -> Unit,
     onDropdownMenuExpanded: (Boolean) -> Unit,
     listState: LazyListState
 ) {
@@ -144,7 +144,7 @@ private fun GithubSearchPagingScreenStateless(
         }
 
         LazyColumn(state = listState) {
-            items(items = uiState.items) {
+            items(items = uiState.items, key = { it.id }) {
                 it.let { item ->
                     Card(
                         modifier = Modifier.clickable { onClickItem(item.htmlUrl) }
