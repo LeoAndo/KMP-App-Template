@@ -19,10 +19,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImage
@@ -72,7 +68,6 @@ private fun PokemonPagingScreenStateless(
 
         LazyVerticalGrid(
             columns = GridCells.Adaptive(180.dp),
-            modifier = Modifier.fillMaxSize(),
             state = listState,
         ) {
             items(uiState.items, key = { it.id }) { item ->
@@ -99,7 +94,7 @@ private fun PokemonPagingScreenStateless(
 
         if (uiState.isLoading) {
             AppLoading(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxSize()
             )
         }
 

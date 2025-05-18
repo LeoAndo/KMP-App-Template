@@ -66,7 +66,7 @@ internal class PokemonApi(private val json: Json) {
 
     companion object {
         const val LIMIT = 20 // 1ページに取得する件数
-        private const val TIMEOUT_MILLIS: Long = 3 * 1000 // TODO Adjust this value for debugging
+        private const val TIMEOUT_MILLIS: Long = 20 * 1000 // TODO Adjust this value for debugging
         private const val API_DOMAIN = "https://pokeapi.co/api/v2/"
     }
 }
