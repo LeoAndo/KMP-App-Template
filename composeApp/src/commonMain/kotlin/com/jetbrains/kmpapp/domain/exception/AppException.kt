@@ -11,7 +11,7 @@ internal sealed class AppException : Exception() {
     data class Unexpected(override val message: String) : AppException()
     data class NotFound(override val message: String) : AppException()
     data class Redirect(override val message: String) : AppException() // 300番台のエラー
-    data class Server(override val message: String) : AppException() // 500番台のエラー
+    data class ServiceUnavailable(override val message: String) : AppException() // 500番台のエラー
     data class Network(override val message: String) : AppException() // ネットワークエラー
 
     // ディスクにデータを書き込むときに例外が発生した場合(DataStoreなど)

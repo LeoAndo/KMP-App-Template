@@ -40,7 +40,7 @@ internal class GithubApi(private val json: Json) {
                     when (e) {
                         is ClientRequestException -> { // ktor: 400番台のエラー
                             val errorResponse = e.response
-                            logError("GithubApi", errorResponse.toString())
+                            logError("GithubApi", e.message)
 
                             // APIの仕様に合わせて想定されるエラーのみ処理する
                             when (val status = errorResponse.status) {
@@ -69,7 +69,7 @@ internal class GithubApi(private val json: Json) {
                                 }
 
                                 // TODO 他の400番台のエラーでもレスポンスBodyの形式がGithubErrorResponseと同じか不明のためエラーメッセージを設定する
-                                else -> throw AppException.Unexpected("${status}: ${e.message}")
+                                else -> throw AppException.Unexpected("An unexpected error has occurred.")
                             }
                         }
 
