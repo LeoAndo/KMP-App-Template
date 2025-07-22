@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+import kotlin.apply
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -57,6 +59,10 @@ kotlin {
             implementation(libs.coil.network.ktor)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
+
+            // TODO add preferences datastore library - START
+            implementation(libs.androidx.datastore.preferences)
+            // TODO add preferences datastore library - END
         }
     }
 }
@@ -71,6 +77,12 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        val localProperties = project.rootProject.file("local.properties")
+        val githubAccessToken = localProperties.inputStream()
+            .use { propsStream -> Properties().apply { load(propsStream) } }
+            .getProperty("GITHUB_ACCESS_TOKEN") ?: throw IllegalStateException("GITHUB_ACCESS_TOKEN not found in local.properties")
+        buildConfigField("String", "GITHUB_ACCESS_TOKEN", "\"${githubAccessToken}\"")
     }
     packaging {
         resources {
@@ -85,6 +97,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 

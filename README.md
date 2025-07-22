@@ -25,3 +25,43 @@ The app uses the following multiplatform dependencies in its implementation:
 - [Koin](https://github.com/InsertKoinIO/koin) for dependency injection
 
 > These are just some of the possible libraries to use for these tasks with Kotlin Multiplatform, and their usage here isn't a strong recommendation for these specific libraries over the available alternatives. You can find a wide variety of curated multiplatform libraries in the [kmp-awesome](https://github.com/terrakok/kmp-awesome) repository.
+
+
+# development environment
+
+```shell
+Android Studio Narwhal Feature Drop | 2025.1.3 Nightly 2025-07-13
+```
+
+# setup
+## Android: Set the Github access token in KMP-App-Template/local.properties
+<img src="./images/setup_android.png" width=100% />
+
+## iOS: Set the Github access token in KMP-App-Template/iosApp/Configuration/Config.xcconfig
+Create Config.xcconfig based on Config.xcconfig.sample and add the following setting value for GITHUB_ACCESS<br>
+<img src="./images/setup_ios.png" width=100% />
+
+# Please Check TODO comments
+
+<img src="./images/todo_comments.png" width=100% />
+
+# capture Android Pixel Fold API 35
+
+|                    1                     |                     2                      |
+|:----------------------------------------:|:------------------------------------------:|
+| <img src="./images/img.png" width=50% /> | <img src="./images/img_1.png" width=50% /> |
+
+# capture iPhone 16 Pro Max iOS 18.4
+|                    1                     |                     2                      |
+|:----------------------------------------:|:------------------------------------------:|
+| <img src="./images/img_2.png" width=50% /> | <img src="./images/img_3.png" width=50% /> |
+
+## feature:Change App Theme (Use Preferences Datastore)
+|                     1                      |                     2                      |
+|:------------------------------------------:|:------------------------------------------:|
+| <img src="./images/img_4.png" width=50% /> | <img src="./images/img_5.png" width=50% /> |
+
+## Pokemon API (Use Ktor)
+|                     1                      |                     2                      |
+|:------------------------------------------:|:------------------------------------------:|
+| <img src="./images/img_7.png" width=50% /> | <img src="./images/img_7.png" width=50% /> |
