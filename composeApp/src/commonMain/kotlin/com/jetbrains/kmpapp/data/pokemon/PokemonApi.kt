@@ -6,12 +6,14 @@ import com.jetbrains.kmpapp.logError
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.cancellation.CancellationException
 
-internal class PokemonApi(private val json: Json) {
+internal class PokemonApi() {
     // APIごとに異なる設定を持つHttpClientを作成する
     private val httpClient: HttpClient by lazy {
         HttpClient {
@@ -19,6 +21,9 @@ internal class PokemonApi(private val json: Json) {
                 url.takeFrom(URLBuilder().takeFrom(API_DOMAIN).apply {
                     encodedPath += url.encodedPath
                 })
+            }
+            install(ContentNegotiation) {
+                json(Json { ignoreUnknownKeys = true })
             }
             install(HttpTimeout) {
                 requestTimeoutMillis = TIMEOUT_MILLIS
@@ -40,7 +45,7 @@ internal class PokemonApi(private val json: Json) {
                                     throw AppException.NotFound("Pokemonが見つかりませんでした")
                                 }
 
-                                else -> throw AppException.Unexpected("${status}: ${e.message}")
+                                else -> throw AppException.Unexpected()
                             }
                         }
 
@@ -56,12 +61,11 @@ internal class PokemonApi(private val json: Json) {
         offset: Int, // 取得開始位置 (0から始まる)
         limit: Int = LIMIT, // 1ページに取得する件数
     ): PokemonResponse {
-        val response = httpClient.get {
+        return httpClient.get {
             url { path("pokemon") }
             parameter("offset", offset)
             parameter("limit", limit)
-        }
-        return json.decodeFromString(response.body())
+        }.body()
     }
 
     companion object {

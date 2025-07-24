@@ -13,12 +13,12 @@ interface MuseumApi {
     suspend fun getData(): List<MuseumObject>
 }
 
-class KtorMuseumApi(private val json: Json) : MuseumApi {
+class KtorMuseumApi() : MuseumApi {
     private val client: HttpClient by lazy {
         HttpClient {
             install(ContentNegotiation) {
                 // TODO Fix API so it serves application/json
-                json(json, contentType = ContentType.Any)
+                json(Json { ignoreUnknownKeys = true }, contentType = ContentType.Any)
             }
         }
     }

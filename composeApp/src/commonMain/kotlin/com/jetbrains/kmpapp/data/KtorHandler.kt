@@ -20,7 +20,7 @@ internal object KtorHandler {
         logError("KtorHandler", msg, e)
         when (e) {
             is HttpRequestTimeoutException, is ConnectTimeoutException, is SocketTimeoutException -> {
-                throw AppException.Network("Network error occurred. Please check your network connection.")
+                throw AppException.Network()
             }
             // ktor: 300番台のエラー (通常スマホアプリでは使わない)
             is RedirectResponseException -> throw AppException.Redirect("${e.response.status}: ${e.message}")
@@ -28,13 +28,13 @@ internal object KtorHandler {
             // is ClientRequestException -> throw AppException.XXXX("${e.response.status}: ${e.message}")
             // ktor: 500番台のエラー
             is ServerResponseException -> {
-                when(val status = e.response.status) {
-                    HttpStatusCode.ServiceUnavailable -> throw AppException.ServiceUnavailable("Service unavailable. Please try again later.")
-                    else -> throw AppException.Unexpected("An unexpected error has occurred.")
+                when(e.response.status) {
+                    HttpStatusCode.ServiceUnavailable -> throw AppException.ServiceUnavailable()
+                    else -> throw AppException.Unexpected()
                 }
             }
             // ktor: それ以外のエラー
-            is ResponseException -> throw AppException.Unexpected("An unexpected error has occurred.")
+            is ResponseException -> throw AppException.Unexpected()
             else -> throw AppException.Unexpected(msg)
         }
     }

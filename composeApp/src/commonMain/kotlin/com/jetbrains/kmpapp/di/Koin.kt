@@ -19,18 +19,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 internal val dataModule = module {
-    // アプリ共通で利用するJsonインスタンスを提供する (single: シングルトンインスタンス)
-    single<Json> { Json { ignoreUnknownKeys = true } }
-
     // Museum関連のDI設定
-    single<MuseumApi> { KtorMuseumApi(get()) }
+    single<MuseumApi> { KtorMuseumApi() }
     single<MuseumStorage> { InMemoryMuseumStorage() }
     single {
         MuseumRepository(get(), get()).apply {
@@ -39,8 +35,8 @@ internal val dataModule = module {
     }
 
     // GithubAPI関連のDI設定
-    single { GithubApi(get()) }
-    single { PokemonApi(get()) }
+    single { GithubApi() }
+    single { PokemonApi() }
 
     // 各種DataStoreのDI設定
     single { SettingsDataStore() }

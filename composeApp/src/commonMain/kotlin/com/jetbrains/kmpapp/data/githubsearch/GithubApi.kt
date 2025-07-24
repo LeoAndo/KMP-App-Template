@@ -7,13 +7,14 @@ import com.jetbrains.kmpapp.logError
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.cancellation.CancellationException
 
-internal class GithubApi(private val json: Json) {
+internal class GithubApi() {
     // APIごとに異なる設定を持つHttpClientを作成する
     private val httpClient: HttpClient by lazy {
         HttpClient {
@@ -27,6 +28,9 @@ internal class GithubApi(private val json: Json) {
                 }
                 header("X-GitHub-Api-Version", "2022-11-28")
                 // header("Accept-Language", "ja-JP")
+            }
+            install(ContentNegotiation) {
+                json(Json { ignoreUnknownKeys = true })
             }
             install(HttpTimeout) {
                 requestTimeoutMillis = TIMEOUT_MILLIS
@@ -45,31 +49,27 @@ internal class GithubApi(private val json: Json) {
                             // APIの仕様に合わせて想定されるエラーのみ処理する
                             when (val status = errorResponse.status) {
                                 HttpStatusCode.Unauthorized -> { // "Bearer $GITHUB_ACCESS_TOKEN"が不正な場合
-                                    val message =
-                                        json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
+                                    val message = errorResponse.body<GithubErrorResponse>().message
                                     throw AppException.UnAuthorized("${status}: $message")
                                 }
 
                                 HttpStatusCode.NotFound -> { // endpointが存在しない場合
-                                    val message =
-                                        json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
+                                    val message = errorResponse.body<GithubErrorResponse>().message
                                     throw AppException.NotFound("${status}: $message")
                                 }
 
                                 HttpStatusCode.Forbidden -> { // requestのrate limitを超えた場合
-                                    val message =
-                                        json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
+                                    val message = errorResponse.body<GithubErrorResponse>().message
                                     throw AppException.Forbidden("${status}: $message")
                                 }
 
                                 HttpStatusCode.UnprocessableEntity -> { // requestのパラメータが不正な場合
-                                    val message =
-                                        json.decodeFromString<GithubErrorResponse>(errorResponse.body()).message
+                                    val message = errorResponse.body<GithubErrorResponse>().message
                                     throw AppException.UnprocessableEntity("${status}: $message")
                                 }
 
                                 // TODO 他の400番台のエラーでもレスポンスBodyの形式がGithubErrorResponseと同じか不明のためエラーメッセージを設定する
-                                else -> throw AppException.Unexpected("An unexpected error has occurred.")
+                                else -> throw AppException.Unexpected()
                             }
                         }
 
@@ -87,14 +87,13 @@ internal class GithubApi(private val json: Json) {
         sort: String,
         perPage: Int = SEARCH_PER_PAGE,
     ): SearchRepositoryResponse {
-        val response: HttpResponse = httpClient.get {
+        return httpClient.get {
             url { path("search", "repositories") }
             parameter("q", query)
             parameter("page", page)
             parameter("per_page", perPage)
             parameter("sort", sort)
-        }
-        return json.decodeFromString(response.body())
+        }.body()
     }
 
     companion object {
