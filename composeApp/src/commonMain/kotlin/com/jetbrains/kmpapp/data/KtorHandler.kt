@@ -23,7 +23,7 @@ internal object KtorHandler {
                 throw AppException.Network()
             }
             // ktor: 300番台のエラー (通常スマホアプリでは使わない)
-            is RedirectResponseException -> throw AppException.Redirect("${e.response.status}: ${e.message}")
+            //is RedirectResponseException -> throw AppException.Redirect("${e.response.status}: ${e.message}")
             // ktor: 400番台のエラー
             // is ClientRequestException -> throw AppException.XXXX("${e.response.status}: ${e.message}")
             // ktor: 500番台のエラー
